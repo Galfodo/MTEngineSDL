@@ -139,7 +139,7 @@ CLayoutParameterFloat::CLayoutParameterFloat(const char *name, float *value)
 : CLayoutParameter(name)
 {
 	this->value = value;
-	this->minValue = 0.1f;
+	this->minValue = 1.0f;
 	this->maxValue = 50.0f;
 	this->step = 0.0f;
 	this->step_fast = 0.0f;
@@ -183,6 +183,12 @@ CLayoutParameterFloat::CLayoutParameterFloat(const char *name, float *value, flo
 	this->flags = flags;
 }
 
+CLayoutParameterFontSize::CLayoutParameterFontSize(const char *name, float *value) 
+  : CLayoutParameterFloat(name, value)
+{
+  this->step = 1.0f;
+}
+
 // returns if parameter has changed
 bool CLayoutParameterFloat::RenderImGui()
 {
@@ -193,6 +199,10 @@ bool CLayoutParameterFloat::RenderImGui()
 	sprintf(buf, "%s##float2", name);
 	if (ImGui::SliderFloat(buf, value, minValue, maxValue, format, flags))
 	{
+		if (step > 0)
+		{
+			*value = ((int64_t)(*this->value / this->step)) * this->step;
+		}
 		guiMain->StoreLayoutInSettingsAtEndOfThisFrame();
 		return true;
 	}

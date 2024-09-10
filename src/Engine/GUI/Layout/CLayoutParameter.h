@@ -85,6 +85,12 @@ public:
 	virtual bool Deserialize(CByteBuffer *byteBuffer);
 };
 
+class CLayoutParameterFontSize : public CLayoutParameterFloat
+{
+public:
+	CLayoutParameterFontSize(const char *name, float *value);
+};
+
 class CLayoutParameterCombo : public CLayoutParameter
 {
 public:
